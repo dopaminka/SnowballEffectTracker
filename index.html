@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ToDo & Timer App</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="icon" type="image/x-icon" href="favicon.png">
+
+</head>
+<body>
+
+<div id="timer-section">
+        <div class="timer-block" id="timer-1min">
+            <div class="timer-display">01:00</div>
+            <button onclick="toggleTimer(60, 'timer-1min')">Start/Pause</button>
+            <button onclick="resetTimer(60, 'timer-1min')">Reset</button>
+        </div>
+
+        <div class="timer-block" id="timer-3min">
+            <div class="timer-display">03:00</div>
+            <button onclick="toggleTimer(180, 'timer-3min')">Start/Pause</button>
+            <button onclick="resetTimer(180, 'timer-3min')">Reset</button>
+        </div>
+
+        <div class="timer-block" id="timer-6min">
+            <div class="timer-display">06:00</div>
+            <button onclick="toggleTimer(360, 'timer-6min')">Start/Pause</button>
+            <button onclick="resetTimer(360, 'timer-6min')">Reset</button>
+        </div>
+
+        <div class="timer-block" id="timer-10min">
+            <div class="timer-display">10:00</div>
+            <button onclick="toggleTimer(600, 'timer-10min')">Start/Pause</button>
+            <button onclick="resetTimer(600, 'timer-10min')">Reset</button>
+        </div>
+
+        <div class="timer-block" id="timer-20min">
+            <div class="timer-display">20:00</div>
+            <button onclick="toggleTimer(1200, 'timer-20min')">Start/Pause</button>
+            <button onclick="resetTimer(1200, 'timer-20min')">Reset</button>
+        </div>
+		
+		<button onclick="resetAllTimers()">Reset All Timers</button>
+
+        <div id="timer-complete-counter">
+        Timer Completions: <span id="complete-count">0</span>
+        <button onclick="resetCompletionCount()">Reset Counter</button>
+		</div>
+		
+		<div class="timer-block" id="stopwatch">
+		<div class="timer-display">00:00</div>
+		<button onclick="toggleStopwatch('stopwatch')">Start/Pause</button>
+		<button onclick="resetStopwatch('stopwatch')">Reset</button>
+		
+		<div id="last-used-timestamp">
+		Last Timer Used: <span id="last-used-time">Never</span>
+		</div>
+<div id="elapsed-time-section">
+    <div>Time Since Last Timer: <span id="elapsed-time">00:00:00</span></div>
+    <button onclick="addToStopwatchFromElapsed()">Add to Stopwatch</button>
+</div>
+</div>
+
+	
+</div>
+ 
+    <!-- Sound selection dropdown -->
+    <select id="soundSelector">
+        <option value="ticking">Ticking</option>
+        <option value="whiteNoise">White Noise</option>
+    </select>
+<div>
+    <label for="volumeControl">Volume:</label>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
+</div>
+
+<div id="todo-section">
+    <textarea id="new-task" rows="1" placeholder="Enter task here..."></textarea>
+    <button onclick="addTask()">Add Task</button>
+	<button onclick="pickRandomTask()">Pick Random Task</button>
+	<button onclick="exportTasksAndSubtasks()">Export Tasks and Subtasks</button>
+	<button onclick="highlightNextTask()">Next Task</button>
+
+
+    <ol id="task-list"></ol> <!-- Changed from <ul> to <ol> -->
+</div>
+
+    <!-- Audio elements for sounds -->
+<audio id="tickingSound" loop preload="auto">
+    <source src="bgm_FastTicking_2.mp3" type="audio/mpeg">
+</audio>
+<audio id="whiteNoiseSound" loop preload="auto">
+    <source src="02-White-Noise-10min.mp3" type="audio/mpeg">
+</audio>
+	 <!-- Audio element for the completion sound -->
+    <audio id="completionSound">
+        <source src="rimshot.mp3" type="audio/mpeg">
+    </audio>
+    <script src="todo.js"></script>
+    <script src="timer.js"></script>
+</body>
+</html>

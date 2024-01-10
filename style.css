@@ -1,0 +1,146 @@
+body {
+    font-family: Arial, sans-serif;
+	background-color: #8b8888; 
+	
+}
+
+#todo-section, #timer-section {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+}
+
+#task-list li {
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px solid #ddd;
+    list-style-type: none;
+    display: flex; /* Use flexbox to align the items */
+    align-items: center; /* Center the items vertically */
+}
+
+#task-list li.completed {
+    text-decoration: line-through;
+}
+
+#task-list li button {
+    cursor: pointer; /* Consistency in clickable items */
+}
+
+#task-list li .task-text {
+    flex-grow: 1; /* Allows the task text to fill the remaining space */
+    margin-left: 10px; /* Add some space between the checkbox and the text */
+}
+
+#timer-display {
+    font-size: 2em;
+    margin: 10px 0;
+}
+
+/* Style for completed task text */
+.completed {
+    text-decoration: line-through;
+    color: #888; /* Optional: change color to indicate completion */
+}
+
+/* Style for the checkbox */
+#task-list li input[type='checkbox'] {
+    cursor: pointer; /* Makes it clear you can click the checkbox */
+    margin-right: 10px; /* Add some space between the checkbox and the task text */
+}
+
+#timer-options span {
+    cursor: pointer;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    display: inline-block;
+}
+.timer-block {
+    transition: background-color 1s; /* Adjust the time for smoother transitions */
+}
+
+.timer-start {
+    background-color: #cccccc; /* Light gray (start color) */
+}
+
+.timer-end {
+    background-color: #1a8b00; /* Dark red (end color) */
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+	background-color: #cccccc;
+}
+
+.task-item > div {
+
+    align-items: right;
+	text-align: left;
+}
+/* Style for subtasks */
+.task-item ul {
+    margin-top: 10px;
+	/*background-color: pink;*/
+	    align-items: right;
+		width: 20vw;
+		background-color: #bbbbbb;
+
+}
+
+.task-name {
+    /* Your custom styles here */
+    font-weight: bold; /* Example: make the text bold */
+    color: #333; /* Example: dark text color */
+    /* Add any other styles as needed */
+}
+
+#task-list {
+    list-style-type: decimal; /* Ensure list style isn't set to none */
+    margin-left: 20px; /* Provide enough space for numbers */
+    /* Other styles as needed */
+}
+
+
+.completed-task {
+    color: #1a8b00;
+    text-decoration: line-through;
+}
+
+.selected-task {
+    background-color: #add8e6; /* Light blue, for example */
+    /* Other styles as needed */
+}
+
+.next-task-highlight {
+    background-color: lightgreen; /* Or any color you prefer */
+}
+
+
+.highlighted-task {
+    background-color: yellow; /* Choose a color that stands out */
+    /* Other styles as needed */
+}
+
+
+button {
+    user-select: none; /* Prevents text inside buttons from being selectable */
+}
+
+.task-name {
+    cursor: pointer;
+    /* ... other styles ... */
+}
+
+.note-textarea {
+    width: 100%; /* Full width */
+    border: 1px solid #ddd;
+    padding: 5px;
+    box-sizing: border-box; /* Include padding and border in the width */
+    /*resize: vertical;  Allow vertical resizing */
+	background-color: #dddddd;
+}
+
+
+
