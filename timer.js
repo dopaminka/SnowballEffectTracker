@@ -49,10 +49,19 @@ function saveStopwatchState() {
 }
 
 function addToStopwatch(duration) {
+    // Load the current state of the stopwatch from localStorage
+    let savedState = localStorage.getItem('stopwatchState');
+    if (savedState) {
+        let stopwatchState = JSON.parse(savedState);
+        stopwatch.time = stopwatchState.time;
+    }
+
+    // Add the duration to the existing time
     stopwatch.time += duration;
     displayStopwatchTime('stopwatch');
     saveStopwatchState();
 }
+
 
 
 function loadStopwatchState() {
@@ -78,15 +87,35 @@ function displayStopwatchTime(timerId) {
 
 
 function saveTimerState(timerId) {
-    localStorage.setItem(`timerState_${timerId}`, JSON.stringify(timers[timerId]));
+    let timer = timers[timerId];
+    let stateToSave = {
+        timeLeft: timer.timeLeft,
+        startTime: timer.startTime,
+        running: timer.interval ? true : false
+    };
+    localStorage.setItem(`timerState_${timerId}`, JSON.stringify(stateToSave));
 }
+
 
 function loadTimerState(timerId, defaultDuration) {
     let savedState = localStorage.getItem(`timerState_${timerId}`);
     if (savedState) {
-        timers[timerId] = JSON.parse(savedState);
-        if (timers[timerId].timeLeft > 0 && timers[timerId].interval) {
-            startTimer(timers[timerId].timeLeft, timerId);
+        let state = JSON.parse(savedState);
+        timers[timerId] = { duration: defaultDuration, timeLeft: state.timeLeft, interval: null, startTime: state.startTime };
+
+        if (state.running) {
+            let currentTime = new Date().getTime();
+            let elapsedTimeSinceStart = Math.floor((currentTime - state.startTime) / 1000);
+
+            // Check if the elapsed time since start is greater than the original duration
+            if (elapsedTimeSinceStart >= state.timeLeft) {
+                // The timer should have already completed
+                timerComplete(timerId);
+            } else {
+                // Adjust the timer's time left and restart
+                timers[timerId].timeLeft -= elapsedTimeSinceStart;
+                startTimer(timers[timerId].timeLeft, timerId);
+            }
         } else {
             displayTime(timerId);
         }
@@ -94,6 +123,11 @@ function loadTimerState(timerId, defaultDuration) {
         resetTimer(defaultDuration, timerId);
     }
 }
+
+
+
+
+
 
 function toggleTimer(duration, timerId) {
     if (!timers[timerId] || !timers[timerId].interval) {
@@ -107,24 +141,33 @@ function toggleTimer(duration, timerId) {
 function startTimer(duration, timerId) {
     timers[timerId] = timers[timerId] || { duration: duration, timeLeft: duration, interval: null };
     let timer = timers[timerId];
+
+    // Set the start time to the current time minus the already elapsed time
+    timer.startTime = new Date().getTime() - ((duration - timer.timeLeft) * 1000);
+
     if (timer.interval) clearInterval(timer.interval);
 
     timer.interval = setInterval(() => {
+        let currentTime = new Date().getTime();
+        let elapsedTime = Math.floor((currentTime - timer.startTime) / 1000);
+        timer.timeLeft = Math.max(timer.duration - elapsedTime, 0);
+
         if (timer.timeLeft > 0) {
-            timer.timeLeft--;
             displayTime(timerId);
         } else {
             clearInterval(timer.interval);
             timer.interval = null;
-            timerComplete(timerId); // Ensure this is called when the timer reaches 00:00
+            timerComplete(timerId);
             stopAllSounds();
-            document.getElementById('completionSound').play(); // Play completion sound
+            document.getElementById('completionSound').play();
         }
         saveTimerState(timerId);
     }, 1000);
 
-    playSelectedSound(); // Moved this line here, after setting the timer interval
+    playSelectedSound();
 }
+
+
 
 
 function playSelectedSound() {
@@ -214,6 +257,7 @@ lastTimerEndTime = new Date(); // Set the end time
     updateElapsedTimeDisplay(); // Update elapsed time display
 }
 
+
 function updateElapsedTimeDisplay() {
     if (!lastTimerEndTime) {
         document.getElementById('elapsed-time').innerText = '00:00:00';
@@ -236,6 +280,12 @@ function addToStopwatchFromElapsed() {
     let elapsedSeconds = Math.floor((currentTime - lastTimerEndTime) / 1000);
 
     addToStopwatch(elapsedSeconds);
+	
+	// Reset the last timer end time to null
+    lastTimerEndTime = null;
+
+    // Update the elapsed time display
+    updateElapsedTimeDisplay();
 }
 
 
