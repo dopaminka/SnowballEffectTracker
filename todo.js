@@ -197,6 +197,20 @@ function createTaskElement(task, index, parentIndex = null) {
     let controls = document.createElement('div');
     mainContent.appendChild(controls);
 
+
+	 // Add the random subtask button if the task has subtasks
+    if (parentIndex === null && task.subtasks && task.subtasks.length > 0) {
+        let pickRandomSubtaskBtn = document.createElement('button');
+        pickRandomSubtaskBtn.textContent = 'Pick Random Subtask';
+        pickRandomSubtaskBtn.onclick = function(event) {
+            event.stopPropagation(); // Prevent click event from bubbling up to the task item
+            pickRandomSubtask(index);
+        };
+        taskItem.appendChild(pickRandomSubtaskBtn);
+		
+    }
+	
+
     // Handle subtasks
     if (parentIndex === null) {
         let subtaskInput = document.createElement('textarea'); // Change this line
@@ -248,18 +262,6 @@ function createTaskElement(task, index, parentIndex = null) {
         selectTask(index, parentIndex);
         return false; // Prevent the default right-click menu
     };
-	
-	 // Add the random subtask button if the task has subtasks
-    if (parentIndex === null && task.subtasks && task.subtasks.length > 0) {
-        let pickRandomSubtaskBtn = document.createElement('button');
-        pickRandomSubtaskBtn.textContent = 'Pick Random Subtask';
-        pickRandomSubtaskBtn.onclick = function(event) {
-            event.stopPropagation(); // Prevent click event from bubbling up to the task item
-            pickRandomSubtask(index);
-        };
-        taskItem.appendChild(pickRandomSubtaskBtn);
-		
-    }
 	
 	// Move Custom Positions button
 	let moveCustomBtn = document.createElement('button');
@@ -342,15 +344,22 @@ function createTaskElement(task, index, parentIndex = null) {
     let noteTextArea = document.createElement('textarea');
     noteTextArea.className = 'note-textarea';
     noteTextArea.value = task.note || '';
-    noteTextArea.rows = 2; // Set initial number of rows
-    noteTextArea.oninput = function() {
-        // Automatically adjust height to fit content
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
+
+    // Function to adjust the number of rows based on line count
+    const adjustRows = (textarea) => {
+        const lineCount = textarea.value.split('\n').length;
+        textarea.rows = lineCount >= 1 ? lineCount : 1;
     };
+
+    // Adjust rows based on initial content
+    adjustRows(noteTextArea);
+
+    // Adjust rows on input
+    noteTextArea.oninput = () => adjustRows(noteTextArea);
     noteTextArea.onchange = function(event) {
         saveTaskNote(index, parentIndex, this.value);
     };
+
     mainContent.appendChild(noteTextArea);
 	
     return taskItem;
@@ -358,11 +367,23 @@ function createTaskElement(task, index, parentIndex = null) {
 
 
 function promoteSubtaskToTask(parentIndex, subtaskIndex) {
-    let subtask = tasks[parentIndex].subtasks.splice(subtaskIndex, 1)[0]; // Remove subtask from its parent
-    tasks.unshift(subtask); // Add subtask as a new task at the beginning of the tasks array
+    // Get the subtask and its parent task
+    let subtask = tasks[parentIndex].subtasks[subtaskIndex];
+    let parentTask = tasks[parentIndex];
+
+    // Append the suffix with the parent task's name to the subtask's text
+    subtask.text += ` (⤵️ ${parentTask.text})`;
+
+    // Remove subtask from its parent
+    tasks[parentIndex].subtasks.splice(subtaskIndex, 1);
+
+    // Add subtask as a new task at the beginning of the tasks array
+    tasks.unshift(subtask);
+
     updateLocalStorage();
     renderTasks();
 }
+
 
 function moveTaskFiveRowsDown(index, parentIndex = null) {
     if (parentIndex === null) {

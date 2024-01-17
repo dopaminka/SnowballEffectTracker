@@ -5,18 +5,21 @@ body {
 }
 
 #todo-section, #timer-section {
-    margin: 20px;
+    margin: 10px;
     padding: 20px;
     border: 1px solid #ddd;
+	
+	
 }
 
 #task-list li {
-    margin: 5px 0;
-    padding: 5px;
+    margin: 2px 0;
+    padding: 1px;
     border: 1px solid #ddd;
     list-style-type: none;
     display: flex; /* Use flexbox to align the items */
     align-items: center; /* Center the items vertically */
+	
 }
 
 #task-list li.completed {
@@ -27,10 +30,6 @@ body {
     cursor: pointer; /* Consistency in clickable items */
 }
 
-#task-list li .task-text {
-    flex-grow: 1; /* Allows the task text to fill the remaining space */
-    margin-left: 10px; /* Add some space between the checkbox and the text */
-}
 
 #timer-display {
     font-size: 2em;
@@ -74,6 +73,14 @@ body {
 	background-color: #cccccc;
 }
 
+
+.main-content {
+	
+width: 100%
+
+	
+}
+
 .task-item > div {
 
     align-items: right;
@@ -81,10 +88,9 @@ body {
 }
 /* Style for subtasks */
 .task-item ul {
-    margin-top: 10px;
 	/*background-color: pink;*/
 	    align-items: right;
-		width: 20vw;
+		width: 100%;
 		background-color: #bbbbbb;
 
 }
@@ -98,7 +104,6 @@ body {
 
 #task-list {
     list-style-type: decimal; /* Ensure list style isn't set to none */
-    margin-left: 20px; /* Provide enough space for numbers */
     /* Other styles as needed */
 }
 
@@ -136,10 +141,9 @@ button {
 .note-textarea {
     width: 100%; /* Full width */
     border: 1px solid #ddd;
-    padding: 5px;
     box-sizing: border-box; /* Include padding and border in the width */
     /*resize: vertical;  Allow vertical resizing */
-	background-color: #dddddd;
+	background-color: #eeeedd;
 }
 
 
