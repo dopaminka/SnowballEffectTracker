@@ -13,8 +13,8 @@ body {
 }
 
 #task-list li {
-    margin: 2px 0;
-    padding: 1px;
+    margin: 5px 0;
+    padding: 5px;
     border: 1px solid #ddd;
     list-style-type: none;
     display: flex; /* Use flexbox to align the items */
