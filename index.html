@@ -65,8 +65,8 @@
  
     <!-- Sound selection dropdown -->
     <select id="soundSelector">
-        <option value="ticking">Ticking</option>
         <option value="whiteNoise">White Noise</option>
+		<option value="ticking">Ticking</option>
     </select>
 <div>
     <label for="volumeControl">Volume:</label>
@@ -76,9 +76,13 @@
 <div id="todo-section">
     <textarea id="new-task" rows="1" placeholder="Enter task here..."></textarea>
     <button onclick="addTask()">Add Task</button>
-	<button onclick="pickRandomTask()">Pick Random Task</button>
-	<button onclick="exportTasksAndSubtasks()">Export Tasks and Subtasks</button>
+	<button onclick="exportTasksAndSubtasks()">Export to TXT</button>
+	<button id="saveTasksBtn">Save Tasks</button>
+	<button id="loadTasksBtn">Load Tasks</button>
+<input type="file" id="fileInput" style="display: none;">
 	<button onclick="highlightNextTask()">Next Task</button>
+	<button onclick="pickRandomTask()">Pick Random Task</button>
+
 
 
     <ol id="task-list"></ol> <!-- Changed from <ul> to <ol> -->

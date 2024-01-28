@@ -444,6 +444,36 @@ function saveTaskNote(index, parentIndex, noteContent) {
     updateLocalStorage();
 }
 
+function exportTasks() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "tasks.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+document.getElementById('saveTasksBtn').addEventListener('click', exportTasks);
+
+document.getElementById('loadTasksBtn').addEventListener('click', function() {
+    document.getElementById('fileInput').click();
+});
+
+document.getElementById('fileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            tasks = JSON.parse(e.target.result);
+            updateLocalStorage(); // Updates LocalStorage with new tasks
+            renderTasks(); // Re-render the tasks
+        };
+        reader.readAsText(file);
+    }
+});
+
+
 function editTaskName(index, parentIndex = null) {
     let taskToEdit = parentIndex === null ? tasks[index] : tasks[parentIndex].subtasks[index];
 
